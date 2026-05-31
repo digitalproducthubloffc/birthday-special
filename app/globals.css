@@ -1,26 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
 @import "tailwindcss";
 
+/* ===================== COLOR TOKENS ===================== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cream: #FDF6EC;
+  --beige: #F5ECD7;
+  --beige-dark: #EAD9C0;
+  --blush: #F4B8C1;
+  --blush-light: #FAE0E4;
+  --blush-dark: #E899A8;
+  --rose: #D4848E;
+  --dusty-rose: #C5848E;
+  --brown: #8B6F5E;
+  --brown-light: #C4A882;
+  --gold: #C8A96E;
+  --warm-white: #FEFAF4;
+  --paper: #F9F0E1;
+  --shadow: rgba(139, 111, 94, 0.2);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-cream: var(--cream);
+  --color-beige: var(--beige);
+  --color-blush: var(--blush);
+  --color-rose: var(--rose);
+  --color-paper: var(--paper);
+  --color-brown: var(--brown);
+  --color-gold: var(--gold);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ===================== RESET & BASE ===================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--paper);
+  color: var(--brown);
+  font-family: 'Cormorant Garamond', serif;
+  overflow-x: hidden;
+}
+
+/* ===================== TYPOGRAPHY ===================== */
+.font-script    { font-family: 'Great Vibes', cursive; }
+.font-dancing   { font-family: 'Dancing Script', cursive; }
+.font-cormorant { font-family: 'Cormorant Garamond', serif; }
+
+/* ===================== PAGE BG ===================== */
+.page-bg {
+  background: linear-gradient(160deg, #F9F0E1 0%, #F5ECD7 25%, #FDF6EC 50%, #F8EBD8 75%, #F2E5D0 100%);
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ===================== POLAROID ===================== */
+.polaroid {
+  background: #fff;
+  padding: 10px 10px 28px 10px;
+  box-shadow: 0 4px 15px rgba(139, 111, 94, 0.18), 0 1px 4px rgba(0,0,0,0.12);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.polaroid:hover {
+  box-shadow: 0 12px 35px rgba(139, 111, 94, 0.28), 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 10;
+}
+.polaroid-caption {
+  font-family: 'Dancing Script', cursive;
+  font-size: 0.85rem;
+  color: var(--brown);
+  text-align: center;
+  margin-top: 6px;
+  line-height: 1.2;
+}
+
+/* ===================== WASHI TAPE ===================== */
+.tape {
+  background: linear-gradient(135deg, rgba(244,184,193,0.75) 0%, rgba(212,168,133,0.65) 50%, rgba(244,184,193,0.75) 100%);
+  position: absolute;
+  height: 22px;
+  border-radius: 2px;
+  opacity: 0.85;
+  z-index: 5;
+}
+.tape::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0px, transparent 8px, rgba(255,255,255,0.15) 8px, rgba(255,255,255,0.15) 9px);
+}
+.tape-sm { height: 18px; width: 45px; }
+
+/* ===================== ANIMATIONS ===================== */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-8px) rotate(2deg); }
+  66% { transform: translateY(-4px) rotate(-1deg); }
+}
+@keyframes float2 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+}
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.2); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.15); }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(244,184,193,0.4); }
+  50% { box-shadow: 0 0 28px rgba(244,184,193,0.85), 0 0 50px rgba(244,184,193,0.3); }
+}
+@keyframes pendulumsway {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+@keyframes flap {
+  0%, 100% { transform: scaleX(1) rotate(0deg); }
+  50% { transform: scaleX(0.2) rotate(15deg); }
+}
+@keyframes fall {
+  0% { transform: translateY(-80px) translateX(0) rotate(0deg); opacity: 0; }
+  15% { opacity: 0.85; }
+  90% { opacity: 0.85; }
+  100% { transform: translateY(105vh) translateX(80px) rotate(360deg); opacity: 0; }
+}
+
+.animate-float       { animation: float 4s ease-in-out infinite; }
+.animate-float2      { animation: float2 5s ease-in-out infinite; }
+.animate-sparkle     { animation: sparkle 2.5s ease-in-out infinite; }
+.animate-heartbeat   { animation: heartbeat 1.5s ease-in-out infinite; }
+.animate-glow-pulse  { animation: glowPulse 2.5s ease-in-out infinite; }
+.animate-flap        { animation: flap 0.6s ease-in-out infinite; }
+.animate-fall        { animation: fall 8s linear infinite; }
+
+/* ===================== SCROLLBAR ===================== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--blush-dark); border-radius: 3px; }
+
+::selection { background: var(--blush); color: #fff; }
+
+/* ===================== MUSIC PLAYER ===================== */
+.music-player {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 1000;
+  background: rgba(253,246,236,0.92);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(244,184,193,0.4);
+  border-radius: 60px;
+  padding: 10px 20px 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 32px rgba(139,111,94,0.18);
+}
+
+/* ===================== UTILITY ===================== */
+.section-padding { padding: 80px 24px; }
+.max-container   { max-width: 1100px; margin: 0 auto; }
+
+/* ===================== FILMSTRIP MARQUEE ===================== */
+@keyframes marquee-slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.marquee-track {
+  display: flex;
+  gap: 32px;
+  padding-right: 32px;
+  animation: marquee-slide 35s linear infinite;
+  will-change: transform;
+}
+
+.marquee-wrapper:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+
+/* ===================== CELEBRATION UI ===================== */
+.celebrate-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, var(--blush), var(--blush-light));
+  color: #fff;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0 8px 24px rgba(139,111,94,0.3);
+  cursor: pointer;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+.celebrate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(139,111,94,0.4);
+}
+
+/* Simple fireworks effect */
+@keyframes fireworks {
+  0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+  100% { opacity: 0; transform: scale(0.5) rotate(360deg); }
+}
+.fireworks {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  margin: -100px 0 0 -100px;
+  background: radial-gradient(circle, var(--gold) 20%, transparent 70%);
+  border-radius: 50%;
+  animation: fireworks 1.5s ease-out forwards;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Individual firework particles for a richer effect */
+.firework-particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background: var(--gold);
+  border-radius: 50%;
+  opacity: 0;
+  animation: firework-particle 1.5s ease-out forwards;
+}
+
+@keyframes firework-particle {
+  0% { opacity: 1; transform: translate(0, 0) scale(0.5); }
+  30% { opacity: 1; transform: translate(var(--dx), var(--dy)) scale(1); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.5); }
 }
