@@ -131,6 +131,11 @@ export default function AdminPage() {
         throw new Error(`Server returned ${res.status}: ${errorText.substring(0, 100)}`);
       }
       await fetchBlobs(); // Refresh the previews
+
+      // Instantly notify the Live Dashboard tab to fetch the new images
+      if (typeof window !== "undefined" && window.BroadcastChannel) {
+        new BroadcastChannel("blob_updates").postMessage("refresh");
+      }
     } catch (err) {
       console.error(err);
       showAlert(`Upload failed: ${err.message}\nIf this happens repeatedly, the image might still be too large, or the format is unsupported.`);
@@ -160,6 +165,10 @@ export default function AdminPage() {
         });
         if (!res.ok) throw new Error("Delete failed");
         await fetchBlobs(); // Refresh previews
+
+        if (typeof window !== "undefined" && window.BroadcastChannel) {
+          new BroadcastChannel("blob_updates").postMessage("refresh");
+        }
       } catch (err) {
         console.error(err);
         showAlert("Delete failed.");

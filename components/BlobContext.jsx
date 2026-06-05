@@ -20,7 +20,20 @@ export function BlobProvider({ children, initialBlobs = [] }) {
     
     // Automatically refresh images when switching back to this tab!
     window.addEventListener("focus", loadBlobs);
-    return () => window.removeEventListener("focus", loadBlobs);
+
+    // Listen for instant upload events from the admin dashboard via BroadcastChannel
+    let channel;
+    if (typeof window !== "undefined" && window.BroadcastChannel) {
+      channel = new BroadcastChannel("blob_updates");
+      channel.onmessage = (event) => {
+        if (event.data === "refresh") loadBlobs();
+      };
+    }
+
+    return () => {
+      window.removeEventListener("focus", loadBlobs);
+      if (channel) channel.close();
+    };
   }, []);
 
   return <BlobContext.Provider value={blobs}>{children}</BlobContext.Provider>;

@@ -42,7 +42,7 @@ export default function SafeImage({
         isExternal ? (
           <img
             ref={imgRef}
-            src={retryCount > 0 ? `${src}&retry=${retryCount}` : src}
+            src={retryCount > 0 ? `${src}&retry=${Date.now()}` : src}
             alt={alt}
             className={`${className} transition-opacity duration-300`}
             style={{
@@ -55,9 +55,9 @@ export default function SafeImage({
               ...style,
             }}
             onLoad={() => setLoaded(true)}
-            onError={() => {
-              if (retryCount < 4) {
-                // Vercel CDN propagation delay: retry up to 4 times (12 seconds)
+            onError={(e) => {
+              if (retryCount < 10) {
+                // Vercel CDN propagation delay: retry up to 10 times (30 seconds)
                 setTimeout(() => setRetryCount((prev) => prev + 1), 3000);
               } else {
                 setError(true);
