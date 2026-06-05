@@ -17,19 +17,19 @@ export default function SafeImage({
   const [retryCount, setRetryCount] = useState(0);
   const imgRef = useRef(null);
 
-  // Fix for browser cache issue: if the image is already loaded, onLoad might not fire
+  // Reset states when src changes, THEN check if it's already cached
   useEffect(() => {
-    if (imgRef.current && imgRef.current.complete && imgRef.current.naturalHeight > 0) {
-      setLoaded(true);
-    }
-  }, [src]);
-
-  // Reset states if src changes
-  useEffect(() => {
+    console.log(`[SafeImage] Setup for ${alt || 'unknown'} with src:`, src);
     setLoaded(false);
     setError(false);
     setRetryCount(0);
-  }, [src]);
+
+    // Give React a tiny tick to apply the reset, or just check the ref immediately
+    if (imgRef.current && imgRef.current.complete && imgRef.current.naturalHeight > 0) {
+      console.log(`[SafeImage] Image ${alt || 'unknown'} instantly loaded from cache!`, src);
+      setLoaded(true);
+    }
+  }, [src, alt]);
 
   const getRetrySrc = () => {
     if (retryCount === 0 || !src) return src;
@@ -55,12 +55,18 @@ export default function SafeImage({
             inset: 0,
             ...style,
           }}
-          onLoad={() => setLoaded(true)}
+          onLoad={() => {
+            console.log(`[SafeImage] SUCCESS loading ${alt || 'unknown'}!`, getRetrySrc());
+            setLoaded(true);
+          }}
           onError={(e) => {
+            console.error(`[SafeImage] ERROR loading ${alt || 'unknown'}! Retry count is ${retryCount}`, getRetrySrc());
             if (retryCount < 10) {
               // Vercel CDN propagation delay: retry up to 10 times (30 seconds)
+              console.log(`[SafeImage] Retrying ${alt || 'unknown'} in 3 seconds...`);
               setTimeout(() => setRetryCount((prev) => prev + 1), 3000);
             } else {
+              console.error(`[SafeImage] GIVING UP on ${alt || 'unknown'} after 10 retries.`);
               setError(true);
             }
           }}

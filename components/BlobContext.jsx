@@ -44,7 +44,24 @@ export function useBlobs() {
 }
 
 export function getBlobUrl(blobs, filename, fallback) {
-  const blob = blobs.find(b => b.pathname === filename);
-  // Append timestamp to force browser to load new image, otherwise it caches the old one aggressively!
-  return blob ? `${blob.url}?t=${new Date(blob.uploadedAt).getTime()}` : fallback;
+  // Sort by newest first to always get the most recent upload
+  const sortedBlobs = [...blobs].sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+  
+  const searchPrefix = filename.split('.')[0]; // e.g. "hero_10"
+  
+  const blob = sortedBlobs.find(b => {
+    const nameWithoutExt = b.pathname.split('.')[0];
+    // Vercel adds a random string: hero_10-AbCdEf
+    const baseName = nameWithoutExt.split('-')[0];
+    return baseName === searchPrefix || b.pathname === filename;
+  });
+
+  if (blob) {
+    const url = `${blob.url}?t=${new Date(blob.uploadedAt).getTime()}`;
+    console.log(`[BlobContext] FOUND blob for ${filename}:`, url);
+    return url;
+  }
+  
+  console.log(`[BlobContext] NO blob for ${filename}, using fallback:`, fallback);
+  return fallback;
 }

@@ -114,7 +114,8 @@ export default function AdminPage() {
       // INSTANT PREVIEW FIX: Show the local file instantly while Vercel processes it in the background
       const objectUrl = URL.createObjectURL(fileToUpload);
       setLocalPreviews((prev) => ({ ...prev, [filename]: objectUrl }));
-
+      
+      console.log(`[Admin] Starting upload for ${file.name} as ${filename}...`);
       const formData = new FormData();
       formData.append("file", fileToUpload);
       formData.append("filename", filename);
@@ -125,16 +126,22 @@ export default function AdminPage() {
         try {
           const errBody = await res.json();
           errorText = errBody.error || errBody.message || JSON.stringify(errBody);
-        } catch {
+        } catch (e) {
           errorText = await res.text();
         }
+        console.error(`[Admin] Upload failed for ${filename}:`, errorText);
         throw new Error(`Server returned ${res.status}: ${errorText.substring(0, 100)}`);
       }
+      
+      console.log(`[Admin] Upload SUCCESS for ${filename}!`);
+      console.log(`[Admin] Fetching fresh blobs after upload...`);
       await fetchBlobs(); // Refresh the previews
 
       // Wait 3 seconds for Vercel CDN to propagate, then instantly notify Live Dashboard tab
       if (typeof window !== "undefined" && window.BroadcastChannel) {
+        console.log(`[Admin] Waiting 3s to broadcast 'refresh' for ${filename}...`);
         setTimeout(() => {
+          console.log(`[Admin] Broadcasting 'refresh' NOW for ${filename}!`);
           new BroadcastChannel("blob_updates").postMessage("refresh");
         }, 3000);
       }
@@ -147,7 +154,13 @@ export default function AdminPage() {
   };
 
   const handleDelete = (filename) => {
-    const blob = blobs.find((b) => b.pathname === filename);
+    const searchPrefix = filename.split('.')[0];
+    const sortedBlobs = [...blobs].sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+    const blob = sortedBlobs.find((b) => {
+      const nameWithoutExt = b.pathname.split('.')[0];
+      const baseName = nameWithoutExt.split('-')[0];
+      return baseName === searchPrefix || b.pathname === filename;
+    });
     if (!blob) return;
 
     showConfirm(`Are you sure you want to delete this custom image and revert to the default?`, async () => {
@@ -183,8 +196,13 @@ export default function AdminPage() {
   };
 
   const getBlobUrl = (filename) => {
-    // Append uploadedAt timestamp to force refresh only when the specific image changes!
-    const blob = blobs.find((b) => b.pathname === filename);
+    const searchPrefix = filename.split('.')[0];
+    const sortedBlobs = [...blobs].sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+    const blob = sortedBlobs.find((b) => {
+      const nameWithoutExt = b.pathname.split('.')[0];
+      const baseName = nameWithoutExt.split('-')[0];
+      return baseName === searchPrefix || b.pathname === filename;
+    });
     return blob ? `${blob.url}?t=${new Date(blob.uploadedAt).getTime()}` : null;
   };
 
