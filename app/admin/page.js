@@ -6,6 +6,7 @@ export default function AdminPage() {
   const [uploading, setUploading] = useState(null);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", message: "", onConfirm: null });
+  const [localPreviews, setLocalPreviews] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState("");
@@ -104,11 +105,15 @@ export default function AdminPage() {
 
       // Explicitly check size to give the user a clear error instead of a generic crash
       const MAX_MB = 2.0; // Reduced to 2MB to be extremely safe against Next.js limits
-      if (fileToUpload.size > MAX_MB * 1024 * 1024) {
-        showAlert(`This image is ${(fileToUpload.size / (1024*1024)).toFixed(1)}MB, which is larger than the safe ${MAX_MB}MB server limit! Since your browser couldn't compress it automatically, please convert it to a smaller JPG first.`);
+      if (fileToUpload.size > 4.5 * 1024 * 1024) {
+        showAlert("Image is still too large after compression. Please try a different photo.");
         setUploading(null);
         return;
       }
+
+      // INSTANT PREVIEW FIX: Show the local file instantly while Vercel processes it in the background
+      const objectUrl = URL.createObjectURL(fileToUpload);
+      setLocalPreviews((prev) => ({ ...prev, [filename]: objectUrl }));
 
       const formData = new FormData();
       formData.append("file", fileToUpload);
@@ -140,6 +145,13 @@ export default function AdminPage() {
 
     showConfirm(`Are you sure you want to delete this custom image and revert to the default?`, async () => {
       setUploading(filename);
+      // Clear any instant local preview
+      setLocalPreviews((prev) => {
+        const next = { ...prev };
+        delete next[filename];
+        return next;
+      });
+
       try {
         const res = await fetch("/api/delete", {
           method: "POST",
@@ -164,7 +176,10 @@ export default function AdminPage() {
   };
 
   const UploadSlot = ({ title, filename }) => {
-    const currentUrl = getBlobUrl(filename);
+    const blobUrl = getBlobUrl(filename);
+    // Prioritize the instant local preview if it exists, otherwise use Vercel's Blob URL
+    const currentUrl = localPreviews[filename] || blobUrl;
+
     return (
       <div style={{ border: "1px solid #eee", padding: 15, borderRadius: 12, background: "#fff", boxShadow: "0 4px 10px rgba(0,0,0,0.03)", display: "flex", flexDirection: "column" }}>
         <h4 style={{ margin: "0 0 10px", color: "#555" }}>{title} <br/><small style={{color: "#aaa", fontWeight: "normal"}}>({filename})</small></h4>
