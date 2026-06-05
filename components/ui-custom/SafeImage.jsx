@@ -15,6 +15,7 @@ export default function SafeImage({
 }) {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const imgRef = useRef(null);
 
   // Use plain <img> for external URLs to avoid Next.js image optimization timeouts
@@ -22,10 +23,17 @@ export default function SafeImage({
 
   // Fix for browser cache issue: if the image is already loaded, onLoad might not fire
   useEffect(() => {
-    if (isExternal && imgRef.current && imgRef.current.complete) {
+    if (isExternal && imgRef.current && imgRef.current.complete && imgRef.current.naturalHeight > 0) {
       setLoaded(true);
     }
   }, [src, isExternal]);
+
+  // Reset states if src changes
+  useEffect(() => {
+    setLoaded(false);
+    setError(false);
+    setRetryCount(0);
+  }, [src]);
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
@@ -34,7 +42,7 @@ export default function SafeImage({
         isExternal ? (
           <img
             ref={imgRef}
-            src={src}
+            src={retryCount > 0 ? `${src}&retry=${retryCount}` : src}
             alt={alt}
             className={`${className} transition-opacity duration-300`}
             style={{
@@ -47,7 +55,14 @@ export default function SafeImage({
               ...style,
             }}
             onLoad={() => setLoaded(true)}
-            onError={() => setError(true)}
+            onError={() => {
+              if (retryCount < 4) {
+                // Vercel CDN propagation delay: retry up to 4 times (12 seconds)
+                setTimeout(() => setRetryCount((prev) => prev + 1), 3000);
+              } else {
+                setError(true);
+              }
+            }}
             fetchPriority={props.priority ? "high" : "auto"}
           />
         ) : (
