@@ -1,6 +1,5 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import NextImage from "next/image";
 
 export default function SafeImage({
   src,
@@ -18,15 +17,12 @@ export default function SafeImage({
   const [retryCount, setRetryCount] = useState(0);
   const imgRef = useRef(null);
 
-  // Use plain <img> for external URLs to avoid Next.js image optimization timeouts
-  const isExternal = src && (src.startsWith("http://") || src.startsWith("https://"));
-
   // Fix for browser cache issue: if the image is already loaded, onLoad might not fire
   useEffect(() => {
-    if (isExternal && imgRef.current && imgRef.current.complete && imgRef.current.naturalHeight > 0) {
+    if (imgRef.current && imgRef.current.complete && imgRef.current.naturalHeight > 0) {
       setLoaded(true);
     }
-  }, [src, isExternal]);
+  }, [src]);
 
   // Reset states if src changes
   useEffect(() => {
@@ -39,49 +35,31 @@ export default function SafeImage({
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
       {/* Actual image */}
       {!error && (
-        isExternal ? (
-          <img
-            ref={imgRef}
-            src={retryCount > 0 ? `${src}&retry=${Date.now()}` : src}
-            alt={alt}
-            className={`${className} transition-opacity duration-300`}
-            style={{
-              opacity: loaded ? 1 : 0,
-              objectFit: "cover",
-              width: "100%",
-              height: "100%",
-              position: "absolute",
-              inset: 0,
-              ...style,
-            }}
-            onLoad={() => setLoaded(true)}
-            onError={(e) => {
-              if (retryCount < 10) {
-                // Vercel CDN propagation delay: retry up to 10 times (30 seconds)
-                setTimeout(() => setRetryCount((prev) => prev + 1), 3000);
-              } else {
-                setError(true);
-              }
-            }}
-            fetchPriority={props.priority ? "high" : "auto"}
-          />
-        ) : (
-          <NextImage
-            src={src}
-            alt={alt}
-            fill={fill}
-            className={`${className} transition-opacity duration-300`}
-            style={{
-              opacity: loaded ? 1 : 0,
-              objectFit: "cover",
-              ...style,
-            }}
-            sizes={sizes}
-            onLoad={() => setLoaded(true)}
-            onError={() => setError(true)}
-            {...props}
-          />
-        )
+        <img
+          ref={imgRef}
+          src={retryCount > 0 ? `${src}&retry=${Date.now()}` : src}
+          alt={alt}
+          className={`${className} transition-opacity duration-300`}
+          style={{
+            opacity: loaded ? 1 : 0,
+            objectFit: "cover",
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            inset: 0,
+            ...style,
+          }}
+          onLoad={() => setLoaded(true)}
+          onError={(e) => {
+            if (retryCount < 10) {
+              // Vercel CDN propagation delay: retry up to 10 times (30 seconds)
+              setTimeout(() => setRetryCount((prev) => prev + 1), 3000);
+            } else {
+              setError(true);
+            }
+          }}
+          fetchPriority={props.priority ? "high" : "auto"}
+        />
       )}
 
       {/* Placeholder shown if error OR not loaded yet */}
