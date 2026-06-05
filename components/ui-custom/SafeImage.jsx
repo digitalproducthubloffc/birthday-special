@@ -31,13 +31,19 @@ export default function SafeImage({
     setRetryCount(0);
   }, [src]);
 
+  const getRetrySrc = () => {
+    if (retryCount === 0 || !src) return src;
+    const separator = src.includes("?") ? "&" : "?";
+    return `${src}${separator}retry=${Date.now()}`;
+  };
+
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
       {/* Actual image */}
       {!error && (
         <img
           ref={imgRef}
-          src={retryCount > 0 ? `${src}&retry=${Date.now()}` : src}
+          src={getRetrySrc()}
           alt={alt}
           className={`${className} transition-opacity duration-300`}
           style={{

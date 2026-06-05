@@ -132,9 +132,11 @@ export default function AdminPage() {
       }
       await fetchBlobs(); // Refresh the previews
 
-      // Instantly notify the Live Dashboard tab to fetch the new images
+      // Wait 3 seconds for Vercel CDN to propagate, then instantly notify Live Dashboard tab
       if (typeof window !== "undefined" && window.BroadcastChannel) {
-        new BroadcastChannel("blob_updates").postMessage("refresh");
+        setTimeout(() => {
+          new BroadcastChannel("blob_updates").postMessage("refresh");
+        }, 3000);
       }
     } catch (err) {
       console.error(err);
@@ -167,7 +169,9 @@ export default function AdminPage() {
         await fetchBlobs(); // Refresh previews
 
         if (typeof window !== "undefined" && window.BroadcastChannel) {
-          new BroadcastChannel("blob_updates").postMessage("refresh");
+          setTimeout(() => {
+            new BroadcastChannel("blob_updates").postMessage("refresh");
+          }, 3000);
         }
       } catch (err) {
         console.error(err);
