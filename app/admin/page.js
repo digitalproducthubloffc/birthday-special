@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-
+import Link from "next/link";
 export default function AdminPage() {
   const [blobs, setBlobs] = useState([]);
   const [uploading, setUploading] = useState(null);
@@ -276,7 +276,7 @@ export default function AdminPage() {
       <div style={{ textAlign: "center", marginBottom: 50 }}>
         <h1 style={{ color: "var(--rose, #d4848e)", margin: "0 0 10px" }}>Photo Upload Admin Dashboard</h1>
         <p style={{ color: "#666", fontSize: "1.1rem" }}>Upload photos here. They will instantly update on the live website via Vercel Blob!</p>
-        <a href="/" style={{ color: "var(--blush, #f4b8c1)", textDecoration: "underline" }}>&larr; Back to Website</a>
+        <Link href="/" style={{ color: "var(--blush, #f4b8c1)", textDecoration: "underline" }}>&larr; Back to Website</Link>
       </div>
 
       <details open style={{ marginBottom: 40 }}>
