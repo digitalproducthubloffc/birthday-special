@@ -1,4 +1,8 @@
 import "./globals.css";
+import { list } from '@vercel/blob';
+import { BlobProvider } from "@/components/BlobContext";
+
+export const dynamic = 'force-dynamic'; // Ensures images are freshly loaded on the server
 
 export const metadata = {
   title: "Happy Birthday 🎂 — A Memory Just For You",
@@ -10,10 +14,17 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  // Fetch images on the server before the page even loads to eliminate the "flash" of old images!
+  const { blobs } = await list().catch(() => ({ blobs: [] }));
+
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <BlobProvider initialBlobs={blobs}>
+          {children}
+        </BlobProvider>
+      </body>
     </html>
   );
 }

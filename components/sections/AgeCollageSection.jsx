@@ -83,7 +83,7 @@ export default function AgeCollageSection() {
             <p className="font-cormorant" style={{ fontSize: "0.8rem", color: "var(--brown)", letterSpacing: 2, margin: "0 0 5px 0" }}>VIP PASS</p>
             <div style={{ height: 1, background: "rgba(139,111,94,0.3)", width: "100%", margin: "5px 0" }} />
             <p style={{ fontSize: "0.65rem", color: "var(--brown)", margin: "5px 0" }}>BIRTHDAY GIRL</p>
-            <h4 className="font-cormorant" style={{ fontSize: "1.8rem", color: "var(--brown)", margin: 0, fontWeight: "bold" }}>MAY 19</h4>
+            <h4 className="font-cormorant" style={{ fontSize: "1.8rem", color: "var(--brown)", margin: 0, fontWeight: "bold" }}>JUNE 6</h4>
             <div style={{ height: 1, background: "rgba(139,111,94,0.3)", width: "100%", margin: "5px 0" }} />
             <p style={{ fontSize: "0.55rem", color: "var(--brown)", margin: "5px 0" }}>VALID FOREVER</p>
             <div style={{ display: "flex", gap: 2, justifyContent: "center", height: 16, marginTop: 8 }}>
@@ -106,7 +106,7 @@ export default function AgeCollageSection() {
           <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ background: "#FDF6EC", padding: "10px 35px", marginBottom: 10, boxShadow: "0 5px 15px rgba(139,111,94,0.1)", clipPath: "polygon(2% 0%, 98% 3%, 100% 97%, 0% 100%)", position: "relative" }}>
              <div style={{ position: "absolute", top: -6, left: "10%", transform: "rotate(-4deg)", width: 40, height: 16, background: "rgba(200,169,110,0.6)" }} />
              <div style={{ position: "absolute", top: -4, right: "10%", transform: "rotate(5deg)", width: 40, height: 16, background: "rgba(200,169,110,0.6)" }} />
-             <h2 className="font-dancing" style={{ fontSize: "2.8rem", color: "var(--rose)", margin: 0, lineHeight: 1 }}>♡ May ♡</h2>
+             <h2 className="font-dancing" style={{ fontSize: "2.8rem", color: "var(--rose)", margin: 0, lineHeight: 1 }}>♡ June ♡</h2>
           </motion.div>
 
           {/* SVG Masked "19" Collage (The masterpiece) */}
@@ -114,12 +114,12 @@ export default function AgeCollageSection() {
             <svg viewBox="0 0 500 400" width="100%" height="100%" style={{ filter: "drop-shadow(0 20px 30px rgba(139,111,94,0.3)) drop-shadow(0 5px 10px rgba(139,111,94,0.15))" }}>
               <defs>
                 <mask id="innerMask">
-                  <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fontSize="380" fontFamily="'Arial Black', 'Impact', sans-serif" fontWeight="900" fill="white" letterSpacing="-10px">19</text>
+                  <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fontSize="380" fontFamily="'Arial Black', 'Impact', sans-serif" fontWeight="900" fill="white" letterSpacing="-10px">28</text>
                 </mask>
               </defs>
               
               {/* Thick White Frame */}
-              <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fontSize="380" fontFamily="'Arial Black', 'Impact', sans-serif" fontWeight="900" fill="white" letterSpacing="-10px">19</text>
+              <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fontSize="380" fontFamily="'Arial Black', 'Impact', sans-serif" fontWeight="900" fill="white" letterSpacing="-10px">28</text>
 
               {/* Scaled-down inner content to leave a white border */}
               <g transform="translate(10, 8) scale(0.96)">

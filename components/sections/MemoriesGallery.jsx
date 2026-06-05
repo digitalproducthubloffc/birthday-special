@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import SafeImage from "../ui-custom/SafeImage";
+import { useBlobs, getBlobUrl } from "../BlobContext";
 import baloonPng from "@/pngs/baloon.png";
 import cakePng from "@/pngs/cake.png";
 import teddyPng from "@/pngs/teddybear.png";
@@ -40,11 +41,18 @@ const YEARS = [
   { age: 18, emoji: "🎓", label: "New Chapter", color: "#E3F2FD", accent: "#90CAF9", type: "photo" },
   { age: 19, emoji: "🎉", label: "Party Time", color: "#FDE8EF", accent: "#F4B8C1", type: "spotify" },
   { age: 20, emoji: "❤️", emojiImg: singleHeartPng, label: "Full of Love", color: "#FFF0F3", accent: "#FF8FAB", type: "photo" },
-  { age: 21, emoji: "👑", label: "Queen of the World", color: "#FFF9E6", accent: "#FFD97D", type: "finale", finale: true },
+  { age: 21, emoji: "🥂", label: "Cheers to 21", color: "#FFF9E6", accent: "#FFD97D", type: "photo" },
+  { age: 22, emoji: "🌟", label: "Brilliant Mind", color: "#FDE8EF", accent: "#F4B8C1", type: "photo" },
+  { age: 23, emoji: "🥂", label: "Cheers to Life", color: "#FFF0E6", accent: "#FFBB85", type: "note" },
+  { age: 24, emoji: "🚀", label: "Reaching High", color: "#F0F8FF", accent: "#A8D8EA", type: "photo" },
+  { age: 25, emoji: "💍", label: "Silver Lining", color: "#F3E5F5", accent: "#CE93D8", type: "photo" },
+  { age: 26, emoji: "✈️", label: "New Horizons", color: "#FFF9E6", accent: "#FFD97D", type: "ticket" },
+  { age: 27, emoji: "💖", emojiImg: singleHeartPng, label: "Pure Gold", color: "#FDE8EF", accent: "#F4B8C1", type: "photo" },
+  { age: 28, emoji: "👑", label: "Queen of the World", color: "#FFF9E6", accent: "#FFD97D", type: "finale", finale: true },
 ];
 
 /* ─── Row sizes: [5, 4, 5, 4, 3] ─────────────────────────────── */
-const ROW_SIZES = [5, 4, 5, 4, 3];
+const ROW_SIZES = [5, 4, 5, 4, 5, 5];
 const ROWS = [];
 let startIdx = 0;
 for (const size of ROW_SIZES) {
@@ -149,6 +157,8 @@ function PolaroidCard({ year, imgIndex, rotate, delay }) {
     "linear-gradient(135deg,rgba(165,214,167,0.85),rgba(244,184,193,0.75))",
   ];
   const tape = tapes[imgIndex % tapes.length];
+  const blobs = useBlobs();
+  const src = getBlobUrl(blobs, `memory_${year.age}.jpg`, IMGS[imgIndex % IMGS.length]);
 
   return (
     <motion.div
@@ -198,7 +208,7 @@ function PolaroidCard({ year, imgIndex, rotate, delay }) {
         {/* Photo area */}
         <div style={{ width: "100%", height: 140, background: year.color, position: "relative", overflow: "hidden" }}>
           <SafeImage
-            src={IMGS[imgIndex % IMGS.length]}
+            src={src}
             alt={`Age ${year.age}`}
             fallbackEmoji={year.emoji}
             placeholderText={year.label}
@@ -295,6 +305,7 @@ function NoteCard({ year, rotate, delay }) {
 
 /* ── Spotify Memory Card ─────────────────────────────────────── */
 function SpotifyCard({ year, imgIndex, rotate, delay }) {
+  const blobs = useBlobs();
   return (
     <motion.div
       initial={{ opacity: 0, y: 40, rotate: rotate - 4 }}
@@ -313,7 +324,7 @@ function SpotifyCard({ year, imgIndex, rotate, delay }) {
         <div style={{ position: "absolute", top: -20, right: -20, width: 70, height: 70, borderRadius: "50%", background: "rgba(30,215,96,0.1)", pointerEvents: "none" }} />
 
         <div style={{ width: "100%", height: 110, borderRadius: 8, background: year.color, position: "relative", overflow: "hidden" }}>
-          <SafeImage src={IMGS[imgIndex % IMGS.length]} alt={`Age ${year.age}`} fallbackEmoji={year.emoji} />
+          <SafeImage src={getBlobUrl(blobs, `memory_${year.age}.jpg`, IMGS[imgIndex % IMGS.length])} alt={`Age ${year.age}`} fallbackEmoji={year.emoji} />
         </div>
 
         <div style={{ marginTop: 10 }}>
@@ -396,6 +407,7 @@ function TicketCard({ year, rotate, delay }) {
 
 /* ── Grand Finale Card (Age 21) ─────────────────────────────── */
 function FinaleCard({ delay }) {
+  const blobs = useBlobs();
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.6, y: 70 }}
@@ -450,7 +462,7 @@ function FinaleCard({ delay }) {
 
         {/* Photo */}
         <div style={{ width: "100%", height: 200, background: "#FFF0CC", position: "relative", overflow: "hidden", marginBottom: 14 }}>
-          <SafeImage src={IMGS[1]} alt="Age 21" fallbackEmoji="👑" placeholderText="The Crown Year" />
+          <SafeImage src={getBlobUrl(blobs, "memory_28.jpg", IMGS[1])} alt="Age 28" fallbackEmoji="👑" placeholderText="The Crown Year" />
         </div>
 
         {/* "21 Today" badge */}
@@ -465,7 +477,7 @@ function FinaleCard({ delay }) {
           }}
         >
           <p style={{ fontFamily: "'Playfair Display',serif", fontSize: "1.25rem", fontWeight: 700, color: "#fff", letterSpacing: "0.06em", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
-            21 Today
+            28 Today
             <img src={cakePng.src} alt="Cake" style={{ width: 24, height: 24, objectFit: "contain" }} />
           </p>
         </motion.div>
@@ -477,7 +489,7 @@ function FinaleCard({ delay }) {
         </div>
 
         <p style={{ fontFamily: "'Dancing Script',cursive", fontSize: "1rem", color: "#8B6F5E", textAlign: "center", lineHeight: 1.55 }}>
-          A beautiful journey<br />through 21 years 💗
+          A beautiful journey<br />through 28 years 💗
         </p>
 
         {/* Confetti */}
@@ -492,7 +504,7 @@ function FinaleCard({ delay }) {
 
       <div style={{ marginTop: 14, textAlign: "center" }}>
         <span style={{ fontSize: "1.9rem" }}>👑</span>
-        <p style={{ fontFamily: "'Great Vibes',cursive", fontSize: "1.5rem", color: "#C8A96E" }}>Queen of 21</p>
+        <p style={{ fontFamily: "'Great Vibes',cursive", fontSize: "1.5rem", color: "#C8A96E" }}>Queen of 28</p>
       </div>
     </motion.div>
   );
@@ -680,7 +692,7 @@ export default function MemoriesGallery() {
               Through The Years
             </h2>
             <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "0.88rem", color: "#C4A882", marginTop: 4, letterSpacing: "0.08em", fontStyle: "italic" }}>
-              Age 1 to Age 21 — every chapter cherished 🌸
+              Age 1 to Age 28 - every chapter cherished 🌸
             </p>
           </div>
         </motion.div>

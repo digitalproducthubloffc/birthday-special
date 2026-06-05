@@ -250,3 +250,5 @@ body {
   30% { opacity: 1; transform: translate(var(--dx), var(--dy)) scale(1); }
   100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.5); }
 }
+
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } } .animate-blink { animation: blink 1s step-end infinite; }

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import NextImage from "next/image";
 
 export default function SafeImage({
@@ -15,9 +15,17 @@ export default function SafeImage({
 }) {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
+  const imgRef = useRef(null);
 
   // Use plain <img> for external URLs to avoid Next.js image optimization timeouts
   const isExternal = src && (src.startsWith("http://") || src.startsWith("https://"));
+
+  // Fix for browser cache issue: if the image is already loaded, onLoad might not fire
+  useEffect(() => {
+    if (isExternal && imgRef.current && imgRef.current.complete) {
+      setLoaded(true);
+    }
+  }, [src, isExternal]);
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
@@ -25,6 +33,7 @@ export default function SafeImage({
       {!error && (
         isExternal ? (
           <img
+            ref={imgRef}
             src={src}
             alt={alt}
             className={`${className} transition-opacity duration-300`}
@@ -76,8 +85,8 @@ export default function SafeImage({
           }}
         >
           <span style={{ fontSize: "2.5rem" }}>{fallbackEmoji}</span>
-          <span className="font-dancing" style={{ color: "var(--rose)", fontSize: "0.85rem" }}>
-            {placeholderText || (src ? src.split("/").pop() : alt)}
+          <span className="font-dancing" style={{ color: "var(--rose)", fontSize: "1.1rem" }}>
+            {placeholderText || alt}
           </span>
         </div>
       )}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import SafeImage from "../ui-custom/SafeImage";
+import { useBlobs, getBlobUrl } from "../BlobContext";
 import baloonPng from "@/pngs/baloon.png";
 import cakePng from "@/pngs/cake.png";
 import teddyPng from "@/pngs/teddybear.png";
@@ -162,6 +163,7 @@ function GlowingCake() {
 }
 
 function ForeverHappyCard() {
+  const blobs = useBlobs();
   return (
     <motion.div
       initial={{ x: -100, opacity: 0, rotate: 15 }}
@@ -175,7 +177,7 @@ function ForeverHappyCard() {
         transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
         className="polaroid" style={{ padding: "6px 6px 20px", filter: "drop-shadow(0 10px 20px rgba(139,111,94,0.15))" }}>
         <div style={{ width: "100%", height: 110, position: "relative", overflow: "hidden", background: "#f0e8dc" }}>
-          <SafeImage src="/images/media_3.png" alt="Sweet laugh" loading="lazy" />
+          <SafeImage src={getBlobUrl(blobs, "hero_1.jpg", "/images/media_3.png")} alt="Sweet laugh" loading="lazy" />
         </div>
         <p className="font-dancing" style={{ fontSize: "0.72rem", color: "var(--brown)", textAlign: "center", marginTop: 4, fontWeight: "bold" }}>
           forever happy 💛
@@ -186,6 +188,7 @@ function ForeverHappyCard() {
 }
 
 function AestheticDivider() {
+  const blobs = useBlobs();
   return (
     <div style={{
       position: "absolute", bottom: "-2%", left: "5%", width: "100%",
@@ -203,7 +206,7 @@ function AestheticDivider() {
           style={{ position: "absolute", left: "28%", top: 20, width: 100 }}
         >
           <div className="polaroid" style={{ padding: "4px 4px 12px", background: "#f0e8dc" }}>
-            <img src="/images/roses_polaroid.png" alt="memory" loading="lazy" style={{ width: "100%", height: 80, objectFit: "cover" }} />
+            <img src={getBlobUrl(blobs, "hero_2.jpg", "/images/roses_polaroid.png")} alt="memory" loading="lazy" style={{ width: "100%", height: 80, objectFit: "cover" }} />
           </div>
         </motion.div>
 
@@ -215,7 +218,7 @@ function AestheticDivider() {
           style={{ position: "absolute", left: "52%", top: -5, width: 90 }}
         >
           <div className="polaroid" style={{ padding: "4px 4px 12px", background: "#f0e8dc" }}>
-            <img src="/images/media_4.png" alt="memory" loading="lazy" style={{ width: "100%", height: 75, objectFit: "cover" }} />
+            <img src={getBlobUrl(blobs, "hero_3.jpg", "/images/media_4.png")} alt="memory" loading="lazy" style={{ width: "100%", height: 75, objectFit: "cover" }} />
           </div>
         </motion.div>
 
@@ -227,7 +230,7 @@ function AestheticDivider() {
           style={{ position: "absolute", left: "75%", top: 30, width: 110 }}
         >
           <div className="polaroid" style={{ padding: "4px 4px 12px", background: "#f0e8dc" }}>
-            <img src="/images/media_1.png" alt="memory" loading="lazy" style={{ width: "100%", height: 90, objectFit: "cover" }} />
+            <img src={getBlobUrl(blobs, "hero_4.jpg", "/images/media_1.png")} alt="memory" loading="lazy" style={{ width: "100%", height: 90, objectFit: "cover" }} />
           </div>
         </motion.div>
       </div>
@@ -261,6 +264,7 @@ function AestheticDivider() {
 }
 
 function LeftSideCards() {
+  const blobs = useBlobs();
   return (
     <div className="hero-make-a-wish absolute z-10 w-[300px] h-[400px] pointer-events-none max-lg:top-[5%] max-lg:left-[2%] lg:top-[8%] lg:left-[2%] max-lg:scale-[0.75] origin-top-left">
 
@@ -278,7 +282,7 @@ function LeftSideCards() {
           className="polaroid" style={{ padding: "8px 8px 24px", filter: "drop-shadow(0 15px 25px rgba(139,111,94,0.25))", width: "100%", background: "#fff" }}
         >
           <div style={{ width: "100%", height: 140, position: "relative", overflow: "hidden", background: "#f0e8dc" }}>
-            <SafeImage src="/images/media_6.png" alt="Make a wish" loading="lazy" />
+            <SafeImage src={getBlobUrl(blobs, "hero_5.jpg", "/images/media_6.png")} alt="Make a wish" loading="lazy" />
           </div>
           <p className="font-dancing" style={{ fontSize: "1.1rem", color: "var(--rose)", textAlign: "center", marginTop: 8, fontWeight: "bold" }}>
             Make a wish ♡
@@ -290,12 +294,13 @@ function LeftSideCards() {
 }
 
 function MobileCircleSlider() {
+  const blobs = useBlobs();
   const images = [
-    "/images/roses_polaroid.png",
-    "/images/media_4.png",
-    "/images/media_1.png",
-    "/images/media_3.png",
-    "/images/media_5.png"
+    getBlobUrl(blobs, "hero_1.jpg", "/images/roses_polaroid.png"),
+    getBlobUrl(blobs, "hero_2.jpg", "/images/media_4.png"),
+    getBlobUrl(blobs, "hero_3.jpg", "/images/media_1.png"),
+    getBlobUrl(blobs, "hero_4.jpg", "/images/media_3.png"),
+    getBlobUrl(blobs, "hero_5.jpg", "/images/media_5.png")
   ];
   const [index, setIndex] = useState(0);
 
@@ -423,6 +428,7 @@ function MobileHeroText() {
 }
 
 export default function HeroSection() {
+  const blobs = useBlobs();
   return (
     <section
       id="hero"
@@ -793,7 +799,7 @@ export default function HeroSection() {
             {/* BIG polaroid */}
             <div className="polaroid" style={{ width: "100%", maxWidth: 300, margin: "0 auto", paddingBottom: 46 }}>
               <div style={{ width: "100%", height: 320, position: "relative", overflow: "hidden", background: "#f0e8dc" }}>
-                <SafeImage priority={true} src="/images/media_1.png" alt="A day to celebrate you" />
+                <SafeImage priority={true} src={getBlobUrl(blobs, "hero_6.jpg", "/images/media_1.png")} alt="A day to celebrate you" />
               </div>
               <p className="font-dancing" style={{
                 textAlign: "center", fontSize: "1rem", fontWeight: 600,
@@ -824,7 +830,7 @@ export default function HeroSection() {
           >
             <div className="polaroid" style={{ padding: "6px 6px 20px" }}>
               <div style={{ width: "100%", height: 120, position: "relative", overflow: "hidden", background: "#f0e8dc" }}>
-                <SafeImage src="/images/media_2.png" alt="Sweet memory" loading="lazy" />
+                <SafeImage src={getBlobUrl(blobs, "hero_7.jpg", "/images/media_2.png")} alt="Sweet memory" loading="lazy" />
               </div>
               <p className="font-dancing" style={{ fontSize: "0.72rem", color: "var(--rose)", textAlign: "center", marginTop: 4, fontWeight: "bold" }}>
                 you shine bright ✨
@@ -841,7 +847,7 @@ export default function HeroSection() {
           >
             <div className="polaroid" style={{ padding: "6px 6px 20px", opacity: 0.9 }}>
               <div style={{ width: "100%", height: 110, position: "relative", overflow: "hidden", background: "#f0e8dc" }}>
-                <SafeImage loading="lazy" src="/images/roses_polaroid.png" alt="Golden moments" />
+                <SafeImage loading="lazy" src={getBlobUrl(blobs, "hero_8.jpg", "/images/roses_polaroid.png")} alt="Golden moments" />
               </div>
               <p className="font-dancing" style={{ fontSize: "0.68rem", color: "var(--brown-light)", textAlign: "center", marginTop: 4 }}>
                 beautiful days 🌸
@@ -1056,7 +1062,7 @@ export default function HeroSection() {
           >
             <div className="polaroid" style={{ padding: "6px 6px 20px" }}>
               <div style={{ width: "100%", height: 105, position: "relative", overflow: "hidden", background: "#f0e8dc" }}>
-                <SafeImage src="/images/media_4.png" alt="Golden days" loading="lazy" />
+                <SafeImage src={getBlobUrl(blobs, "hero_9.jpg", "/images/media_4.png")} alt="Golden days" loading="lazy" />
               </div>
               <p className="font-dancing" style={{ fontSize: "0.65rem", color: "var(--rose)", textAlign: "center", marginTop: 4, fontWeight: "bold" }}>
                 sweet memories ✨
@@ -1073,7 +1079,7 @@ export default function HeroSection() {
           >
             <div className="polaroid" style={{ padding: "6px 6px 20px", opacity: 0.95 }}>
               <div style={{ width: "100%", height: 100, position: "relative", overflow: "hidden", background: "#f0e8dc" }}>
-                <SafeImage src="/images/media_5.png" alt="Treasured moments" loading="lazy" />
+                <SafeImage src={getBlobUrl(blobs, "hero_10.jpg", "/images/media_5.png")} alt="Treasured moments" loading="lazy" />
               </div>
               <p className="font-dancing" style={{ fontSize: "0.62rem", color: "var(--brown-light)", textAlign: "center", marginTop: 4 }}>
                 so beautiful ♡

@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import SafeImage from "../ui-custom/SafeImage";
+import { useBlobs, getBlobUrl } from "../BlobContext";
 import baloonPng from "@/pngs/baloon.png";
 
 const stripPhotos = [
@@ -115,6 +116,14 @@ function PolaroidCard({ photo, index }) {
 }
 
 export default function FilmStripSection() {
+  const blobs = useBlobs();
+  
+  // Map our hardcoded strip photos to the dynamic blob URLs (film_1.jpg to film_8.jpg)
+  const dynamicPhotos = stripPhotos.map((photo, i) => ({
+    ...photo,
+    src: getBlobUrl(blobs, `film_${i + 1}.jpg`, photo.src)
+  }));
+
   return (
     <section
       id="filmstrip"
@@ -266,7 +275,7 @@ export default function FilmStripSection() {
               aria-hidden={track === 2 ? "true" : undefined}
               style={{ display: "flex", alignItems: "flex-end", paddingTop: 8, paddingBottom: 40 }}
             >
-              {stripPhotos.map((photo, i) => (
+              {dynamicPhotos.map((photo, i) => (
                 <PolaroidCard key={`t${track}-${i}`} photo={photo} index={i} />
               ))}
             </div>

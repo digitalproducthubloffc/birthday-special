@@ -13,9 +13,9 @@ const FinalSurprise    = dynamic(() => import("@/components/sections/FinalSurpri
 
 export default function Home() {
   return (
-    <main className="page-bg">
-      {/* Floating audio player */}
-      <AudioPlayer />
+      <main className="page-bg">
+        {/* Floating audio player */}
+        <AudioPlayer />
 
       {/* ① Hero */}
       <HeroSection />
@@ -55,7 +55,7 @@ export default function Home() {
           © {new Date().getFullYear()} — A memory crafted with care
         </p>
       </footer>
-    </main>
+      </main>
   );
 }
 
