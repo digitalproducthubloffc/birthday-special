@@ -48,11 +48,14 @@ export default function Home() {
         background: "rgba(245,236,215,0.6)",
         borderTop: "1px solid rgba(244,184,193,0.25)",
       }}>
-        <p className="font-dancing" style={{ color: "var(--rose)", fontSize: "1rem" }}>
+        <p className="font-dancing" style={{ color: "var(--rose)", fontSize: "1.1rem" }}>
           Made with love, just for you 🌸
         </p>
-        <p className="font-cormorant" style={{ color: "var(--brown-light)", fontSize: "0.8rem", marginTop: 4, letterSpacing: "0.12em" }}>
+        <p className="font-cormorant" style={{ color: "var(--brown-light)", fontSize: "0.8rem", marginTop: 6, letterSpacing: "0.12em" }}>
           © {new Date().getFullYear()} — A memory crafted with care
+        </p>
+        <p className="font-cormorant" style={{ color: "var(--brown-light)", fontSize: "0.85rem", marginTop: 8, letterSpacing: "0.05em" }}>
+          Designed by <a href="https://www.instagram.com/digitalstore2236/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--rose)", textDecoration: "underline", textUnderlineOffset: "3px", fontWeight: "bold" }}>@digitalstore2236</a>
         </p>
       </footer>
       </main>
