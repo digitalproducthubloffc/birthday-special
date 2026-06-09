@@ -338,11 +338,11 @@ export default function AdminPage() {
 
       <details open style={{ marginBottom: 40 }}>
         <summary style={{ fontSize: "1.5rem", fontWeight: "bold", cursor: "pointer", padding: 15, background: "#fff", border: "1px solid #eee", borderRadius: 8, marginBottom: 20 }}>
-          2. Through The Years (28 Images)
+          2. Through The Years (Selected Images)
         </summary>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 20, padding: 10 }}>
-          {Array.from({ length: 28 }).map((_, i) => (
-            <UploadSlot key={i} title={`Year ${i + 1}`} filename={`memory_${i + 1}.jpg`} />
+          {[1, 2, 3, 4, 5, 6, 25, 26, 27, 28].map((year) => (
+            <UploadSlot key={year} title={`Age ${year}`} filename={`memory_${year}.jpg`} />
           ))}
         </div>
       </details>

@@ -691,13 +691,67 @@ export default function MemoriesGallery() {
             <h2 style={{ fontFamily: "'Great Vibes',cursive", fontSize: "4.2rem", color: "#C5848E", lineHeight: 1 }}>
               Through The Years
             </h2>
-            <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "0.88rem", color: "#C4A882", marginTop: 4, letterSpacing: "0.08em", fontStyle: "italic" }}>
-              Age 1 to Age 28 - every chapter cherished 🌸
+              Every chapter is special, every memory is precious 🌸
             </p>
           </div>
         </motion.div>
 
-        {/* ═══ RESPONSIVE TIMELINE GALLERY ══════════════════════════ */}
+        {/* ═══ EARLY YEARS ══════════════════════════ */}
+        <div style={{ textAlign: "center", marginBottom: "30px", marginTop: "10px" }}>
+          <div style={{ display: "inline-block", background: "#F4B8C1", padding: "8px 24px", borderRadius: 20, color: "#fff", fontWeight: "bold", fontFamily: "'Cormorant Garamond',serif", letterSpacing: "0.1em", boxShadow: "0 4px 10px rgba(244,184,193,0.3)" }}>
+            The Early Years 🌸
+          </div>
+        </div>
+
+        <div 
+          className="max-[450px]:flex-col max-[450px]:items-center"
+          style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "clamp(20px, 4vw, 40px)",
+          padding: "10px 0 30px 0",
+          width: "100%",
+        }}>
+          {YEARS.filter(y => y.age >= 1 && y.age <= 6).map((year, i) => (
+            <div key={year.age} className="max-[450px]:scale-[1.15] max-[450px]:my-3 origin-center">
+              <TimelineCard
+                year={year}
+                imgIndex={year.age - 1}
+                delay={(i % 4) * 0.1}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* ═══ BEAUTIFUL DIVIDER ══════════════════════════ */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", margin: "40px 0", width: "100%", position: "relative" }}
+        >
+          {/* Dashed lines */}
+          <div style={{ flex: 1, height: 1, borderTop: "1px dashed rgba(244,184,193,0.6)", maxWidth: "25%" }}></div>
+          
+          <div style={{ padding: "10px 30px", textAlign: "center", position: "relative" }}>
+             <div style={{ position: "absolute", top: -15, left: "50%", transform: "translateX(-50%)", color: "#F4B8C1", fontSize: "1.2rem" }}>♡</div>
+             <p className="font-cormorant" style={{ fontSize: "1.4rem", color: "#8B6F5E", fontStyle: "italic", margin: 0, background: "rgba(253,246,236,0.5)", padding: "8px 25px", borderRadius: 20, boxShadow: "0 4px 15px rgba(244,184,193,0.15)" }}>
+                The years may fly,<br/>but memories stay forever
+             </p>
+             <div style={{ position: "absolute", bottom: -15, left: "50%", transform: "translateX(-50%)", color: "#F4B8C1", fontSize: "1.2rem" }}>♥</div>
+          </div>
+          
+          <div style={{ flex: 1, height: 1, borderTop: "1px dashed rgba(244,184,193,0.6)", maxWidth: "25%" }}></div>
+        </motion.div>
+
+        {/* ═══ THE BEAUTIFUL NOW ══════════════════════════ */}
+        <div style={{ textAlign: "center", marginBottom: "30px", marginTop: "30px" }}>
+          <div style={{ display: "inline-block", background: "#F4B8C1", padding: "8px 24px", borderRadius: 20, color: "#fff", fontWeight: "bold", fontFamily: "'Cormorant Garamond',serif", letterSpacing: "0.1em", boxShadow: "0 4px 10px rgba(244,184,193,0.3)" }}>
+            The Beautiful Now 🌸
+          </div>
+        </div>
+
         <div 
           className="max-[450px]:flex-col max-[450px]:items-center"
           style={{
@@ -708,11 +762,11 @@ export default function MemoriesGallery() {
           padding: "10px 0",
           width: "100%",
         }}>
-          {YEARS.map((year, i) => (
+          {YEARS.filter(y => y.age >= 25 && y.age <= 28).map((year, i) => (
             <div key={year.age} className="max-[450px]:scale-[1.15] max-[450px]:my-3 origin-center">
               <TimelineCard
                 year={year}
-                imgIndex={i}
+                imgIndex={year.age - 1}
                 delay={(i % 4) * 0.1}
               />
             </div>
