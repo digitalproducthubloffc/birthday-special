@@ -8,6 +8,7 @@ import cakePng from "@/pngs/cake.png";
 import teddyPng from "@/pngs/teddybear.png";
 import singleHeartPng from "@/pngs/singleheart.png";
 import multiHeartPng from "@/pngs/multipleheart.png";
+import butterflyPng from "@/pngs/butterfly.png";
 
 /* ─── Image sources ───────────────────────────────────────────── */
 const IMGS = [
@@ -691,17 +692,51 @@ export default function MemoriesGallery() {
             <h2 style={{ fontFamily: "'Great Vibes',cursive", fontSize: "4.2rem", color: "#C5848E", lineHeight: 1 }}>
               Through The Years
             </h2>
+            <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "0.88rem", color: "#C4A882", marginTop: 4, letterSpacing: "0.08em", fontStyle: "italic" }}>
               Every chapter is special, every memory is precious 🌸
             </p>
           </div>
         </motion.div>
 
         {/* ═══ EARLY YEARS ══════════════════════════ */}
-        <div style={{ textAlign: "center", marginBottom: "30px", marginTop: "10px" }}>
-          <div style={{ display: "inline-block", background: "#F4B8C1", padding: "8px 24px", borderRadius: 20, color: "#fff", fontWeight: "bold", fontFamily: "'Cormorant Garamond',serif", letterSpacing: "0.1em", boxShadow: "0 4px 10px rgba(244,184,193,0.3)" }}>
-            The Early Years 🌸
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 100, damping: 20 }}
+          style={{ textAlign: "center", marginBottom: "60px", marginTop: "30px", position: "relative" }}
+        >
+          {/* Floating Butterfly PNG */}
+          <motion.div 
+            animate={{ y: [0, -15, 0], x: [0, 10, 0], rotate: [-5, 5, -5] }} 
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} 
+            style={{ position: "absolute", top: -40, left: "15%", width: 90, zIndex: 10, filter: "drop-shadow(0 10px 15px rgba(0,0,0,0.15))" }}
+          >
+            <img src={butterflyPng.src} alt="Butterfly" style={{ width: "100%", height: "auto" }} />
+          </motion.div>
+
+          <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "100%", maxWidth: "600px", height: "3px", background: "linear-gradient(90deg, transparent, rgba(244,184,193,0.6), transparent)" }} />
+          
+          <div style={{ 
+            display: "inline-block", 
+            background: "linear-gradient(135deg, #FDF6EC, #F9EDE3)", 
+            padding: "15px 50px", 
+            borderRadius: 40, 
+            color: "#C5848E", 
+            fontWeight: "bold", 
+            fontFamily: "'Cormorant Garamond',serif", 
+            fontSize: "2rem",
+            letterSpacing: "0.15em", 
+            boxShadow: "0 12px 35px rgba(139,111,94,0.15), inset 0 2px 6px rgba(255,255,255,0.9)",
+            border: "2px solid rgba(244,184,193,0.4)",
+            position: "relative",
+            zIndex: 2
+          }}>
+            <motion.span animate={{ rotate: [-8, 8, -8], scale: [1, 1.15, 1] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} style={{ display: "inline-block", marginRight: 15 }}>🌸</motion.span>
+            The Early Years
+            <motion.span animate={{ rotate: [8, -8, 8], scale: [1, 1.15, 1] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} style={{ display: "inline-block", marginLeft: 15 }}>🌸</motion.span>
           </div>
-        </div>
+        </motion.div>
 
         <div 
           className="max-[450px]:flex-col max-[450px]:items-center"
@@ -726,31 +761,107 @@ export default function MemoriesGallery() {
 
         {/* ═══ BEAUTIFUL DIVIDER ══════════════════════════ */}
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          style={{ display: "flex", alignItems: "center", justifyContent: "center", margin: "40px 0", width: "100%", position: "relative" }}
+          transition={{ duration: 0.8 }}
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", margin: "60px 0", width: "100%", position: "relative" }}
         >
-          {/* Dashed lines */}
-          <div style={{ flex: 1, height: 1, borderTop: "1px dashed rgba(244,184,193,0.6)", maxWidth: "25%" }}></div>
+          {/* Animated line left */}
+          <motion.div 
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.3 }}
+            style={{ flex: 1, height: 2, background: "linear-gradient(90deg, transparent, rgba(244,184,193,0.8))", maxWidth: "25%", transformOrigin: "right" }}
+          />
           
-          <div style={{ padding: "10px 30px", textAlign: "center", position: "relative" }}>
-             <div style={{ position: "absolute", top: -15, left: "50%", transform: "translateX(-50%)", color: "#F4B8C1", fontSize: "1.2rem" }}>♡</div>
-             <p className="font-cormorant" style={{ fontSize: "1.4rem", color: "#8B6F5E", fontStyle: "italic", margin: 0, background: "rgba(253,246,236,0.5)", padding: "8px 25px", borderRadius: 20, boxShadow: "0 4px 15px rgba(244,184,193,0.15)" }}>
+          <div style={{ padding: "15px 40px", textAlign: "center", position: "relative", zIndex: 5 }}>
+             {/* Floating heart top */}
+             <motion.div 
+               animate={{ y: [0, -6, 0], scale: [1, 1.1, 1] }}
+               transition={{ duration: 3, repeat: Infinity }}
+               style={{ position: "absolute", top: -20, left: "50%", marginLeft: "-10px", color: "#F4B8C1", fontSize: "1.5rem" }}
+             >
+               ♡
+             </motion.div>
+             
+             <p className="font-cormorant" style={{ 
+                fontSize: "2.4rem", 
+                color: "#8B6F5E", 
+                fontStyle: "italic", 
+                margin: 0, 
+                background: "linear-gradient(135deg, rgba(253,246,236,0.9), rgba(255,255,255,0.6))", 
+                padding: "20px 45px", 
+                borderRadius: "40px 10px 40px 10px", 
+                boxShadow: "0 15px 40px rgba(139,111,94,0.15), inset 0 2px 8px rgba(255,255,255,0.9)",
+                border: "2px solid rgba(244,184,193,0.5)",
+                backdropFilter: "blur(8px)",
+                letterSpacing: "0.05em",
+                lineHeight: 1.4
+             }}>
                 The years may fly,<br/>but memories stay forever
              </p>
-             <div style={{ position: "absolute", bottom: -15, left: "50%", transform: "translateX(-50%)", color: "#F4B8C1", fontSize: "1.2rem" }}>♥</div>
+
+             {/* Floating heart bottom */}
+             <motion.div 
+               animate={{ y: [0, 6, 0], scale: [1, 1.1, 1] }}
+               transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
+               style={{ position: "absolute", bottom: -20, left: "50%", marginLeft: "-10px", color: "#F4B8C1", fontSize: "1.5rem" }}
+             >
+               ♥
+             </motion.div>
           </div>
           
-          <div style={{ flex: 1, height: 1, borderTop: "1px dashed rgba(244,184,193,0.6)", maxWidth: "25%" }}></div>
+          {/* Animated line right */}
+          <motion.div 
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.3 }}
+            style={{ flex: 1, height: 2, background: "linear-gradient(270deg, transparent, rgba(244,184,193,0.8))", maxWidth: "25%", transformOrigin: "left" }}
+          />
         </motion.div>
 
         {/* ═══ THE BEAUTIFUL NOW ══════════════════════════ */}
-        <div style={{ textAlign: "center", marginBottom: "30px", marginTop: "30px" }}>
-          <div style={{ display: "inline-block", background: "#F4B8C1", padding: "8px 24px", borderRadius: 20, color: "#fff", fontWeight: "bold", fontFamily: "'Cormorant Garamond',serif", letterSpacing: "0.1em", boxShadow: "0 4px 10px rgba(244,184,193,0.3)" }}>
-            The Beautiful Now 🌸
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 100, damping: 20 }}
+          style={{ textAlign: "center", marginBottom: "60px", marginTop: "40px", position: "relative" }}
+        >
+          {/* Floating Balloons PNG */}
+          <motion.div 
+            animate={{ y: [0, -20, 0], rotate: [2, -2, 2] }} 
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }} 
+            style={{ position: "absolute", top: -60, right: "12%", width: 110, zIndex: 10, filter: "drop-shadow(0 15px 20px rgba(0,0,0,0.2))" }}
+          >
+            <img src={baloonPng.src} alt="Balloons" style={{ width: "100%", height: "auto" }} />
+          </motion.div>
+
+          <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "100%", maxWidth: "600px", height: "3px", background: "linear-gradient(90deg, transparent, rgba(244,184,193,0.6), transparent)" }} />
+          
+          <div style={{ 
+            display: "inline-block", 
+            background: "linear-gradient(135deg, #FDF6EC, #F9EDE3)", 
+            padding: "15px 50px", 
+            borderRadius: 40, 
+            color: "#C5848E", 
+            fontWeight: "bold", 
+            fontFamily: "'Cormorant Garamond',serif", 
+            fontSize: "2rem",
+            letterSpacing: "0.15em", 
+            boxShadow: "0 12px 35px rgba(139,111,94,0.15), inset 0 2px 6px rgba(255,255,255,0.9)",
+            border: "2px solid rgba(244,184,193,0.4)",
+            position: "relative",
+            zIndex: 2
+          }}>
+            <motion.span animate={{ rotate: [-10, 10, -10], scale: [1, 1.25, 1] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }} style={{ display: "inline-block", marginRight: 15 }}>✨</motion.span>
+            The Beautiful Now
+            <motion.span animate={{ rotate: [10, -10, 10], scale: [1, 1.25, 1] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }} style={{ display: "inline-block", marginLeft: 15 }}>✨</motion.span>
           </div>
-        </div>
+        </motion.div>
 
         <div 
           className="max-[450px]:flex-col max-[450px]:items-center"
